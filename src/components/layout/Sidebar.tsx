@@ -1,7 +1,5 @@
-'use client'
-
-import Link from 'next/link'
-import { usePathname, useRouter } from 'next/navigation'
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { 
   HomeIcon, 
   PlusIcon, 
@@ -9,10 +7,8 @@ import {
   ArrowUpTrayIcon,
   BellIcon,
   ChartBarIcon,
-  CalculatorIcon,
-  ArrowRightOnRectangleIcon
-} from '@heroicons/react/24/outline'
-import { createClient } from '@/lib/supabase/client'
+  CalculatorIcon
+} from '@heroicons/react/24/outline';
 
 const navigation = [
   { name: 'Dashboard', href: '/dashboard', icon: HomeIcon },
@@ -22,30 +18,19 @@ const navigation = [
   { name: 'Alerts', href: '/dashboard/alerts', icon: BellIcon },
   { name: 'Trends', href: '/dashboard/trends', icon: ChartBarIcon },
   { name: 'Cost Calculator', href: '/dashboard/calculator', icon: CalculatorIcon },
-]
+];
 
 export default function Sidebar() {
-  const pathname = usePathname()
-  const router = useRouter()
-
-  const handleLogout = async () => {
-    try {
-      const supabase = createClient()
-      await supabase.auth.signOut()
-      router.push('/auth/signin')
-    } catch (error) {
-      console.error('Error signing out:', error)
-    }
-  }
+  const pathname = usePathname();
 
   return (
     <div className="flex h-full w-64 flex-col bg-gray-900">
       <div className="flex h-16 items-center px-6">
-        <h1 className="text-xl font-semibold text-white">Energy Monitor</h1>
+        <h1 className="text-xl font-semibold">Energy Dashboard</h1>
       </div>
-      <nav className="flex flex-1 flex-col space-y-1 px-4 py-4">
+      <nav className="flex-1 space-y-1 px-4 py-4">
         {navigation.map((item) => {
-          const isActive = pathname === item.href
+          const isActive = pathname === item.href;
           return (
             <Link
               key={item.name}
@@ -64,21 +49,9 @@ export default function Sidebar() {
               />
               {item.name}
             </Link>
-          )
+          );
         })}
       </nav>
-      <div className="px-4 py-4 border-t border-gray-800">
-        <button
-          onClick={handleLogout}
-          className="flex w-full items-center px-2 py-2 text-sm font-medium text-gray-300 rounded-md hover:bg-gray-800 hover:text-white group"
-        >
-          <ArrowRightOnRectangleIcon
-            className="mr-3 h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-white"
-            aria-hidden="true"
-          />
-          Sign Out
-        </button>
-      </div>
     </div>
-  )
+  );
 }
